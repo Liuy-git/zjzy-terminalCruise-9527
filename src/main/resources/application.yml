@@ -1,0 +1,8 @@
+# spring
+spring:
+  application:
+    name: zjzy-getcustomer-job
+  # 启动时所使用的配置文件后缀
+  profiles:
+    active: dev
+    #active: ${profileActive}

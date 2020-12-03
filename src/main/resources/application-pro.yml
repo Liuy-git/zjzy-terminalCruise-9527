@@ -1,0 +1,89 @@
+#正式库配置
+debug: false
+# server
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    max-threads: 400
+    accept-count: 200
+  servlet:
+    context-path: /job
+  port: 8090
+
+# management
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+# spring
+spring:
+  profiles: pro
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  # 开发阶段使用本地数据库
+  datasource:
+    zjzywx:
+      driver-class-name: com.ibm.db2.jcc.DB2Driver
+      url: jdbc:db2://115.236.3.26:60000/zjzywx
+      username: nbadv
+      password: gk8C5eTMRS
+    mysql:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://rm-bp171s8s0r7sec792.mysql.rds.aliyuncs.com/zjzywx?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+      username: zjzy
+      password: Zoomlgd89921110@2019
+    # druid相关配置
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      #监控统计拦截的filters,去掉后监控界面sql无法统计，'wall'用于防火墙
+      filters: stat
+      #配置初始化大小/最小/最大
+      initial-size: 2
+      min-idle: 1
+      max-active: 200
+      #获取连接等待超时时间
+      max-wait: 60000
+      #间隔多久进行一次检测，检测需要关闭的空闲连接
+      time-between-eviction-runs-millis: 60000
+      #一个连接在池中最小生存的时间
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      #打开PSCache，并指定每个连接上PSCache的大小。oracle设为true，mysql设为false。分库分表较多推荐设置为false
+      pool-prepared-statements: false
+      max-pool-prepared-statement-per-connection-size: 200
+
+#################### mybatis-plus start ##########################
+mybatis-plus:
+  global-config:
+    banner: false
+    # 逻辑删除
+    db-config:
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.zoomlgd.zjzygc.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    jdbc-type-for-null: NULL
+    # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+    logging-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+################### mybatis-plus end ##########################
+
+#################### logger start ##########################
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    root: INFO
+    console: DEBUG
+    com.zoomlgd.zjzygc.mapper: debug
+################### logger end ##########################
